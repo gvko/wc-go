@@ -48,10 +48,21 @@ func getFileWordCount(file *os.File) int {
 	return wordCount
 }
 
+func getFileCharCount(file *os.File) int {
+	charCount := 0
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := scanner.Text()
+		charCount += len(line)
+	}
+	return charCount
+}
+
 func main() {
 	cFlag := flag.Bool("c", false, "the command -c")
 	lFlag := flag.Bool("l", false, "the command -l")
 	wFlag := flag.Bool("w", false, "the command -w")
+	mFlag := flag.Bool("m", false, "the command -m")
 	flag.Parse()
 
 	filePath := flag.Arg(0)
@@ -72,5 +83,9 @@ func main() {
 	if *wFlag {
 		wordCount := getFileWordCount(file)
 		println("   ", wordCount, filePath)
+	}
+	if *mFlag {
+		charCount := getFileCharCount(file)
+		println("   ", charCount, filePath)
 	}
 }

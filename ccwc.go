@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"flag"
 	"fmt"
 	"os"
@@ -28,17 +29,33 @@ func getFileSize(filePath string) int64 {
 	return fileInfo.Size()
 }
 
+func getFileLinesCount(file *os.File) int {
+	lineCount := 0
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		lineCount++
+	}
+	return lineCount
+}
+
 func main() {
 	cFlag := flag.Bool("c", false, "the command -c")
+	lFlag := flag.Bool("l", false, "the command -l")
 	flag.Parse()
+
 	filePath := flag.Arg(0)
 	checkFilePathGiven(filePath)
-	
-	_, err := os.ReadFile(filePath)
+
+	file, err := os.Open(filePath)
 	checkErr(err)
+	defer file.Close()
 
 	if *cFlag {
 		fileSize := getFileSize(filePath)
-		println(fileSize, filePath)
+		println("   ", fileSize, filePath)
+	}
+	if *lFlag {
+		lineCount := getFileLinesCount(file)
+		println("   ", lineCount, filePath)
 	}
 }

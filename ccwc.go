@@ -87,7 +87,9 @@ func main() {
 		println("   ", lineCount, filePath)
 	}
 	if *wFlag {
+		// FIXME: returns 0 when default option (no commands provided)
 		wordCount := getFileWordCount(file)
+		println("WORDS: ", wordCount)
 		println("   ", wordCount, filePath)
 	}
 	if *mFlag {

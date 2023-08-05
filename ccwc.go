@@ -72,6 +72,12 @@ func main() {
 	checkErr(err)
 	defer file.Close()
 
+	if !*cFlag && !*lFlag && !*wFlag && !*mFlag {
+		*cFlag = true
+		*lFlag = true
+		*wFlag = true
+	}
+
 	if *cFlag {
 		fileSize := getFileSize(filePath)
 		println("   ", fileSize, filePath)
